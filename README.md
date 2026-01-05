@@ -30,3 +30,23 @@ curl http://localhost:8080/health
 # Readiness check
 curl http://localhost:8080/readiness
 ```
+
+### Docker Image
+
+#### Build Commands
+
+```bash
+# Build locally
+docker build -t noppadol26dw/sample-app:v1 .
+
+# Run the container
+docker run -p 8080:8080 noppadol26dw/sample-app:v1
+
+# Login to DockerHub
+docker login
+
+# Push to DockerHub
+docker push noppadol26dw/sample-app:v1
+```
+
+**Docker Hub**: `https://hub.docker.com/r/noppadol26dw/sample-app`
