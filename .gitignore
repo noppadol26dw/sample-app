@@ -35,7 +35,7 @@ Thumbs.db
 *.tfvars.json
 
 # Docker
-.dockerignore
+#.dockerignore
 
 # Helm
 *.tgz
