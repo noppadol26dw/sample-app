@@ -88,7 +88,7 @@ module "iam_app" {
   cluster_name        = module.eks.cluster_name
   app_namespace       = var.app_namespace
   app_service_account = var.app_service_account
-  s3_bucket_name      = var.s3_bucket_name
+  s3_bucket_arn       = var.s3_bucket_arn
   sqs_queue_arn       = var.sqs_queue_arn
 
   tags = local.common_tags

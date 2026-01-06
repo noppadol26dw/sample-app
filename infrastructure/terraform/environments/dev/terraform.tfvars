@@ -37,8 +37,8 @@ app_namespace       = "sample-ns"
 app_service_account = "sample-app-sa"
 
 # Application IAM Permissions
-s3_bucket_name = "my-web-assets-999"
-sqs_queue_arn  = "arn:aws:sqs:ap-southeast-1:123456789123:lms-import-data"
+s3_bucket_arn = "arn:aws:s3:::my-web-assets-999"
+sqs_queue_arn = "arn:aws:sqs:ap-southeast-1:123456789123:lms-import-data"
 
 # Additional Add-ons Configuration
 enable_metrics_server     = true

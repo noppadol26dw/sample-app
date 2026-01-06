@@ -23,8 +23,8 @@ variable "app_service_account" {
   type        = string
 }
 
-variable "s3_bucket_name" {
-  description = "S3 bucket name for app access (leave empty to skip S3 permissions)"
+variable "s3_bucket_arn" {
+  description = "S3 bucket ARN for app access (leave empty to skip S3 permissions)"
   type        = string
   default     = ""
 }

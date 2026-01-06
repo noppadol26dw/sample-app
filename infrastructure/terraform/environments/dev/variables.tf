@@ -145,8 +145,8 @@ variable "app_service_account" {
   default     = ""
 }
 
-variable "s3_bucket_name" {
-  description = "S3 bucket name for app access"
+variable "s3_bucket_arn" {
+  description = "S3 bucket ARN for app access"
   type        = string
   default     = ""
 }
