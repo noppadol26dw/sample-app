@@ -46,5 +46,15 @@ output "node_role_name" {
 
 output "oidc_provider_arn" {
   description = "OIDC provider ARN"
-  value       = try(aws_eks_cluster.main.identity[0].oidc[0].issuer, "")
+  value       = aws_iam_openid_connect_provider.eks.arn
+}
+
+output "oidc_provider_url" {
+  description = "OIDC provider URL"
+  value       = aws_eks_cluster.main.identity[0].oidc[0].issuer
+}
+
+output "cluster_creator_arn" {
+  description = "ARN of the cluster creator (auto-granted admin access)"
+  value       = data.aws_caller_identity.current.arn
 }
