@@ -247,6 +247,9 @@ resource "aws_iam_role_policy" "eks_auto_mode_policy" {
   })
 }
 
+# Get current AWS caller identity
+data "aws_caller_identity" "current" {}
+
 # OIDC Provider for EKS (required for IRSA and Pod Identity)
 data "tls_certificate" "eks" {
   url = aws_eks_cluster.main.identity[0].oidc[0].issuer
@@ -263,6 +266,35 @@ resource "aws_iam_openid_connect_provider" "eks" {
       Name = "${var.cluster_name}-oidc-provider"
     }
   )
+}
+
+# Access for cluster creator
+resource "aws_eks_access_entry" "cluster_creator" {
+  cluster_name      = aws_eks_cluster.main.name
+  principal_arn     = data.aws_caller_identity.current.arn
+  type              = "STANDARD"
+  kubernetes_groups = []
+
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.cluster_name}-creator-access"
+    }
+  )
+}
+
+# Associate cluster admin policy to cluster creator
+# No need manually grant the access via AWS Console
+resource "aws_eks_access_policy_association" "cluster_creator_admin" {
+  cluster_name  = aws_eks_cluster.main.name
+  principal_arn = data.aws_caller_identity.current.arn
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+
+  access_scope {
+    type = "cluster"
+  }
+
+  depends_on = [aws_eks_access_entry.cluster_creator]
 }
 
 # Managed Node Group (if Auto Mode is disabled)
