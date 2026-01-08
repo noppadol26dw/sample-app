@@ -247,6 +247,24 @@ resource "aws_iam_role_policy" "eks_auto_mode_policy" {
   })
 }
 
+# OIDC Provider for EKS (required for IRSA and Pod Identity)
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.main.identity[0].oidc[0].issuer
+}
+
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.main.identity[0].oidc[0].issuer
+
+  tags = merge(
+    var.tags,
+    {
+      Name = "${var.cluster_name}-oidc-provider"
+    }
+  )
+}
+
 # Managed Node Group (if Auto Mode is disabled)
 resource "aws_eks_node_group" "main" {
   count           = var.enable_eks_automode ? 0 : 1
